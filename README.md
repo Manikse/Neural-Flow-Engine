@@ -42,4 +42,3 @@ Specializing in Automation and Informatization of Processes
 <p align="center">
 Engineered by manikse
 </p>
-.

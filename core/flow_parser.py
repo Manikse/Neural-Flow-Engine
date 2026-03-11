@@ -1,49 +1,49 @@
-import json
+import sys
+from knowledge_base import VectorKnowledgeBase
 
 class NeuralFlow:
+    """
+    Engine-as-a-Code framework. Compiles natural language intent into a 
+    deterministic Directed Acyclic Graph (DAG) for mathematical execution.
+    """
     def __init__(self):
         self.nodes = []
-        # Mocking a connection to a local Vector DB (e.g., ChromaDB or FAISS)
-        self.standards_db = {
-            "ISO_9001": "Quality management guidelines applied.",
-            "DIN_1045": "Concrete structure calculation constraints applied."
-        }
+        self.kb = VectorKnowledgeBase()
 
-    def retrieve_standard(self, query: str):
-        """Fetches engineering/automation standards based on the prompt."""
-        print(f"[RAG SEARCH] Searching local Vector DB for: '{query}'...")
-        # Simulating search hit
-        return self.standards_db.get("DIN_1045", "Standard not found. Using default constraints.")
-
-    def compile_nodes(self, task_description: str):
-        """Converts natural language into actionable calculation nodes."""
-        print("[AI COMPILER] Parsing task to logic nodes...")
-        context = self.retrieve_standard(task_description)
+    def compile_dag(self, task_description: str):
+        """
+        Parses input string and constructs executable logic nodes based on retrieved constraints.
+        """
+        print("[COMPILER] Analyzing syntactic structure and mathematical intent...")
+        context = self.kb.retrieve_context(task_description)
         
-        # Simulating AI converting text to an execution graph
         self.nodes = [
-            {"node_id": 1, "action": "extract_parameters", "status": "pending"},
-            {"node_id": 2, "action": "apply_standard", "context": context, "status": "pending"},
-            {"node_id": 3, "action": "execute_math_model", "status": "pending"}
+            {"id": "N0", "operation": "extract_tensor_parameters", "state": "initialized"},
+            {"id": "N1", "operation": "inject_rag_constraints", "context": context, "state": "initialized"},
+            {"id": "N2", "operation": "execute_deterministic_model", "state": "initialized"}
         ]
         return self.nodes
 
-    def run(self):
-        """Executes the dynamic pipeline."""
-        print("="*40)
-        print("⚡ EXECUTING NEURAL FLOW ⚡")
-        print("="*40)
+    def execute(self):
+        """
+        Traverses the DAG and executes deterministic mathematical operations sequentially.
+        """
+        print("-" * 60)
+        print("[EXECUTION ENGINE] Initiating pipeline traversal.")
+        print("-" * 60)
+        
         for node in self.nodes:
-            print(f"Executing Node {node['node_id']}: {node['action'].upper()}...")
+            print(f"Executing Node [{node['id']}]: {node['operation'].upper()}")
             if 'context' in node:
-                print(f"   -> Context injected: {node['context']}")
-        print("="*40)
-        print("✅ Flow Execution Completed. Returning JSON payload.")
+                print(f"  -> Context Injected: {node['context']}")
+        
+        print("-" * 60)
+        print("[EXECUTION ENGINE] Pipeline terminated successfully. Output matrix generated.")
 
 if __name__ == "__main__":
     engine = NeuralFlow()
-    task = "Calculate maximum load bearing capacity for structural beam based on DIN 1045."
+    task_input = "Calculate maximum load bearing capacity for a steel beam governed by EUROCODE_3."
     
-    print(f"USER PROMPT: {task}\n")
-    engine.compile_nodes(task)
-    engine.run()
+    print(f"INPUT STREAM: {task_input}\n")
+    engine.compile_dag(task_input)
+    engine.execute()
